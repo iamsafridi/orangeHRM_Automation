@@ -20,8 +20,8 @@ public class Setup {
 
     @AfterTest
     public void quitDriver(){
-//        LoginPage loginPage = new LoginPage(driver);
-//        loginPage.doLogout(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.doLogout(driver);
 //        driver.quit();
     }
 }

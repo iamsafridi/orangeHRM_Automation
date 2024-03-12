@@ -8,6 +8,9 @@ import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -16,6 +19,7 @@ import page.PIMPage;
 import utils.Utils;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 
 
@@ -36,11 +40,16 @@ public class PIMTestRunner extends Setup {
 
         pimPage.registerUser(firstName,lastName,username,password);
         Utils.doScroll(driver,0,500);
-        Thread.sleep(7000);
-
+//        Thread.sleep(7000);
+        List<WebElement> title = driver.findElements(By.className("orangehrm-main-title"));
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(40));
+        wait.until(ExpectedConditions.visibilityOf(title.get(0)));
 
         List<WebElement> id = driver.findElements(By.className("oxd-input"));
         String empID = id.get(4).getAttribute("value");
+
+        String message = driver.findElements(By.className("orangehrm-main-title")).get(0).getText();
+        Assert.assertTrue(message.contains("Personal Details"));
 
 
         UsersModel usersModel = new UsersModel();
