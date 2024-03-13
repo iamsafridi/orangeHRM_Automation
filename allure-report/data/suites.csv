@@ -1,0 +1,5 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Wed Mar 13 10:43:21 BDT 2024","Wed Mar 13 10:43:26 BDT 2024","5221","Orange HRM Automation","PIM Automation","testrunner.PIMTestRunner","testrunner.PIMTestRunner","searchUser","Admin can search user",""
+"passed","Wed Mar 13 10:43:36 BDT 2024","Wed Mar 13 10:43:42 BDT 2024","5588","Orange HRM Automation","Employee Profile","testrunner.EmployeeProfileTestRunner","testrunner.EmployeeProfileTestRunner","doLogin","User can login successfully",""
+"passed","Wed Mar 13 10:42:44 BDT 2024","Wed Mar 13 10:42:45 BDT 2024","1301","Orange HRM Automation","Admin Login","testrunner.LoginTestRunner","testrunner.LoginTestRunner","doLogin","Admin can login successfully",""
+"passed","Wed Mar 13 10:43:08 BDT 2024","Wed Mar 13 10:43:21 BDT 2024","12755","Orange HRM Automation","PIM Automation","testrunner.PIMTestRunner","testrunner.PIMTestRunner","employeeRegistration","New employee created successfully",""

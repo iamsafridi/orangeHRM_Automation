@@ -19,9 +19,9 @@ public class Setup {
     }
 
     @AfterTest
-    public void quitDriver(){
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.doLogout(driver);
-//        driver.quit();
+    public void quitBrowser(){
+        LoginPage loginPage=new LoginPage(driver);
+        loginPage.doLogout();
+        driver.quit();
     }
 }

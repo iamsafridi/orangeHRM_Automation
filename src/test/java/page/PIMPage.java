@@ -45,7 +45,6 @@ public class PIMPage {
         inputField.get(6).sendKeys(password);
         inputField.get(7).sendKeys(password);
         button.get(1).click();
-
     }
 
     public void searchUserByEmployeeId(String empId) {
@@ -55,9 +54,8 @@ public class PIMPage {
     }
 
     public void searchUserByEmployeeName(String empName) throws InterruptedException {
-        menuItems.get(0).click();
-        employeeName.get(2).sendKeys(empName);
-        Thread.sleep(2000);
+        menuItems.get(8).click();
+        employeeName.get(1).sendKeys(empName);
         selectRole.click();
         button.get(1).click();
 

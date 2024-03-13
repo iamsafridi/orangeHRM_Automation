@@ -22,7 +22,10 @@ public class LoginPage {
     @FindBy(css = "[role =\"menuitem\"]")
     List<WebElement> logoutBtn;
 
+    WebDriver driver;
+
     public LoginPage(WebDriver driver){
+        this.driver=driver;
         PageFactory.initElements(driver,this);
     }
 
@@ -32,7 +35,7 @@ public class LoginPage {
         loginBtn.click();
     }
 
-    public void doLogout(WebDriver driver){
+    public void doLogout(){
         LoginPage loginPage = new LoginPage(driver);
         loginPage.loggedinUser.click();
         loginPage.logoutBtn.get(3).click();
