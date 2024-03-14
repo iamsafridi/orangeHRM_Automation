@@ -1,4 +1,4 @@
-# ORangeHRM Management System Automation
+# OrangeHRM Management System Automation
 
 This project aims to automate the testing of OrangeHRM management system using Selenium WebDriver and TestNG, with reporting done using Allure. It covers various scenarios such as admin login, employee creation, searching for employees, updating employee information, and more.
 
