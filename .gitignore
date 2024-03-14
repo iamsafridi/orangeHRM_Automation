@@ -2,7 +2,7 @@
 build/
 gradle/
 .idea/
-src/test/java/testrunner
+src/test/java/testrunner/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
