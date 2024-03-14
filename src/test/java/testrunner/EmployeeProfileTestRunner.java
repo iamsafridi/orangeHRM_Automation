@@ -21,7 +21,7 @@ import java.util.List;
 
 
 public class EmployeeProfileTestRunner extends Setup {
-    @Test(priority = 3, description = "User can login successfully")
+    @Test(priority = 3, description = "Verify successful login as a newly created employee with valid credentials")
     public void empLoginWithValidCred() throws IOException, ParseException, InterruptedException {
         LoginPage loginPage = new LoginPage(driver);
         JSONObject jsonObject = Utils.getUser();
@@ -33,13 +33,13 @@ public class EmployeeProfileTestRunner extends Setup {
         Assert.assertTrue(imgProfile.isDisplayed());
     }
 
-    @Test(priority = 2, description = "Verify that the employee's full name is displayed beside the profile icon after logging in")
+    @Test(priority = 4, description = "Verify that the employee's full name is displayed beside the profile icon after logging in")
     public void assertProfPic() {
         WebElement fullName = driver.findElement(By.className("oxd-userdropdown-name"));
         Assert.assertTrue(fullName.isDisplayed());
     }
 
-    @Test(priority = 3, description = "Login as Newly Created Employee with Invalid Credentials")
+    @Test(priority = 2, description = "Verify unsuccessful login as a newly created employee with invalid credentials")
     public void empLoginWithInvalidCred() throws IOException, ParseException, InterruptedException {
         LoginPage loginPage = new LoginPage(driver);
         String username = "invalid";
@@ -53,7 +53,22 @@ public class EmployeeProfileTestRunner extends Setup {
         softAssert.assertAll();
     }
 
-    @Test(priority = 4, description = "Verify unsuccessful login as a newly created employee with empty credentials")
+    @Test(priority = 2, description = "Verify unsuccessful login as a newly created employee with valid email invalid password")
+    public void empLoginWithInvalidPass() throws IOException, ParseException, InterruptedException {
+        LoginPage loginPage = new LoginPage(driver);
+        JSONObject jsonObject = Utils.getUser();
+        String username = (String) jsonObject.get("username");
+        String password = "invalid";
+        loginPage.doLogin(username, password);
+
+        String alertActual = driver.findElements(By.className("oxd-text")).get(1).getText();
+        String alertExpected = "Invalid credentials";
+        SoftAssert softAssert = new SoftAssert(); //soft assertion
+        softAssert.assertTrue(alertActual.contains(alertExpected));
+        softAssert.assertAll();
+    }
+
+    @Test(priority = 1, description = "Verify unsuccessful login as a newly created employee with empty credentials")
     public void empLoginWithEmptyCred() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.doLogin("", "");
@@ -62,24 +77,18 @@ public class EmployeeProfileTestRunner extends Setup {
         SoftAssert softAssert = new SoftAssert(); //soft assertion
         softAssert.assertTrue(alertActual.contains(alertExpected));
         softAssert.assertAll();
+
     }
 
     @Test(priority = 5, description = "Verify successful update of gender")
-    public void updateGender() {
+    public void updateGender() throws InterruptedException {
         WebElement myInfo = driver.findElements(By.className("oxd-main-menu-item-wrapper")).get(2);
         myInfo.click();
         List<WebElement> title = driver.findElements(By.className("orangehrm-main-title"));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-        wait.until(ExpectedConditions.visibilityOf(title.get(0)));
+
+        Utils.waitForElement(driver, title.get(0));
         WebElement gender = driver.findElements(By.className("oxd-radio-input")).get(0);
         gender.click();
-    }
-    @Test(priority = 6, description = "Verify successful update of blood group")
-
-
-    public void updateBloodGroup() {
-        WebElement myInfo = driver.findElements(By.className("oxd-main-menu-item-wrapper")).get(2);
-        myInfo.click();
         Utils.doScroll(driver, 0, 400);
         WebElement selectBloodIcon = driver.findElements(By.className("oxd-select-text-input")).get(2);
         selectBloodIcon.click();
@@ -90,11 +99,13 @@ public class EmployeeProfileTestRunner extends Setup {
         actions.sendKeys(Keys.DOWN).perform();
         actions.sendKeys(Keys.DOWN).perform();
         actions.sendKeys(Keys.ENTER).perform();
-
         WebElement saveBtn = driver.findElements(By.className("oxd-button")).get(1);
         saveBtn.click();
+        WebElement successAlert = driver.findElement(By.id("oxd-toaster_1"));
+        Utils.waitForElement(driver, successAlert);
+        Assert.assertTrue(successAlert.isDisplayed(), "Success alert message is not displayed after saving");
+
+
     }
-
-
 }
 

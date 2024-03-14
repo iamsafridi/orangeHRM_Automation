@@ -7,11 +7,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,5 +82,10 @@ public class Utils {
         JSONArray jsonArray = (JSONArray) jsonParser.parse(new FileReader(fileLocation));
         JSONObject jsonObject = (JSONObject) jsonArray.get(jsonArray.size()-1);
         return jsonObject;
+    }
+
+    public static void waitForElement(WebDriver driver, WebElement element){
+        WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(40));
+        wait.until(ExpectedConditions.visibilityOf(element));
     }
 }

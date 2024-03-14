@@ -41,11 +41,10 @@ public class PIMTestRunner extends Setup {
         String password = Utils.generateRandomPassword();
 
         pimPage.registerUser(firstName, lastName, username, password);
-        Utils.doScroll(driver, 0, 500);
+        Utils.doScroll(driver, 0, 300);
         Thread.sleep(7000);
-//        List<WebElement> title = driver.findElements(By.className("orangehrm-main-title"));
-//        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(40));
-//        wait.until(ExpectedConditions.visibilityOf(title.get(0)));
+//        List<WebElement> title= driver.findElements(By.className("orangehrm-main-title"));
+//        Utils.waitForElement(driver,title.get(0));
         String message = driver.findElements(By.className("orangehrm-main-title")).get(0).getText();
         Assert.assertTrue(message.contains("Personal Details"));
 
@@ -66,6 +65,24 @@ public class PIMTestRunner extends Setup {
     public void employeeCreatedSuccessfully() {
         String message = driver.findElements(By.className("orangehrm-main-title")).get(0).getText();
         Assert.assertTrue(message.contains("Personal Details"));
+    }
+
+    @Test(priority = 3,description = "Verify created password matches the requirement")
+    public void strongPassword() throws IOException, ParseException {
+        PIMPage pimPage = new PIMPage(driver);
+        JSONObject jsonObject = Utils.getUser();
+        String firstName = "";
+        String lastName = "";
+        String username = "";
+        String password = (String) jsonObject.get("password");
+        String alertActual = driver.findElement(By.className("oxd-chip")).getText();
+        String alertExpected = "Strong";
+
+        SoftAssert softAssert = new SoftAssert(); //soft assertion
+        softAssert.assertTrue(alertActual.contains(alertExpected));
+        softAssert.assertAll();
+        pimPage.registerUser(firstName, lastName, username, password);
+
     }
 
     @Test(priority = 3, description = "Verify unsuccessful creation of a new employee with missing details")
@@ -91,10 +108,12 @@ public class PIMTestRunner extends Setup {
     @Test(priority = 4, description = "Verify unsuccessful creation of a new employee with a duplicate employee ID or username.")
     public void employeeRegistrationWithDuplicateUsername() throws InterruptedException, IOException, ParseException {
         PIMPage pimPage = new PIMPage(driver);
+        JSONObject jsonObject = Utils.getUser();
+        String duplicateUsername = (String) jsonObject.get("username");
         Faker faker = new Faker();
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
-        String username = "huong.king";
+        String username = duplicateUsername;
         String password = Utils.generateRandomPassword();
 
         pimPage.registerUser(firstName, lastName, username, password);
@@ -114,12 +133,15 @@ public class PIMTestRunner extends Setup {
         JSONObject jsonObject = Utils.getUser();
         String empID = (String) jsonObject.get("empID");
         pimPage.searchUserByEmployeeId(empID);
-//        String alertActual = driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[2]/div/span")).getText();
-//        String alertExpected = "(1) Record Found";
-//
-//        SoftAssert softAssert = new SoftAssert(); //soft assertion
-//        softAssert.assertTrue(alertActual.contains(alertExpected));
-//        softAssert.assertAll();
+        WebElement waiter = driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[2]/div/span"));
+//        Utils.waitForElement(driver,waiter);
+        Thread.sleep(1500);
+        String alertActual = waiter.getText();
+        String alertExpected = "(1) Record Found";
+
+        SoftAssert softAssert = new SoftAssert(); //soft assertion
+        softAssert.assertTrue(alertActual.contains(alertExpected));
+        softAssert.assertAll();
     }
 
     @Test(priority = 6, description = "Search Employee by invalid ID")
@@ -127,7 +149,10 @@ public class PIMTestRunner extends Setup {
         PIMPage pimPage = new PIMPage(driver);
         String empID = "2342";
         pimPage.searchUserByEmployeeId(empID);
-        String alertActual = driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[2]/div/span")).getText();
+        WebElement waiter = driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div[2]/div/span"));
+//        Utils.waitForElement(driver,waiter);
+        Thread.sleep(1000);
+        String alertActual = waiter.getText();
         String alertExpected = "No Records Found";
 
         SoftAssert softAssert = new SoftAssert(); //soft assertion
@@ -141,8 +166,10 @@ public class PIMTestRunner extends Setup {
         JSONObject jsonObject = Utils.getUser();
         String empName = (String) jsonObject.get("firstName");
         pimPage.searchUserByEmployeeName(empName);
-        Thread.sleep(2000);
-        String alertActual = driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div/div[1]/div/span")).getText();
+        WebElement waiter = driver.findElement(By.xpath("//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[2]/div/div[1]/div/span"));
+//        Utils.waitForElement(driver,waiter);
+        Thread.sleep(1000);
+        String alertActual = waiter.getText();
         String alertExpected = "(1) Record Found";
 
         SoftAssert softAssert = new SoftAssert(); //soft assertion

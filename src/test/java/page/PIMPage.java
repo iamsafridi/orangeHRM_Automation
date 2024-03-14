@@ -1,5 +1,6 @@
 package page;
 
+import config.Setup;
 import config.UsersModel;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -14,7 +15,7 @@ import utils.Utils;
 import java.io.IOException;
 import java.util.List;
 
-public class PIMPage {
+public class PIMPage extends Setup {
     @FindBy(className = "oxd-main-menu-item")
     List<WebElement> menuItems;
     @FindBy(className = "oxd-button")
@@ -56,6 +57,7 @@ public class PIMPage {
     public void searchUserByEmployeeName(String empName) throws InterruptedException {
         menuItems.get(8).click();
         employeeName.get(1).sendKeys(empName);
+        Thread.sleep(2000);
         selectRole.click();
         button.get(1).click();
 

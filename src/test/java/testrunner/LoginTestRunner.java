@@ -9,7 +9,7 @@ import org.testng.asserts.SoftAssert;
 import page.LoginPage;
 
 public class LoginTestRunner extends Setup {
-    @Test(priority = 3,description = "Verify successful login with valid admin credentials")
+    @Test(priority = 4,description = "Verify successful login with valid admin credentials")
     public void doLogin() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.doLogin("admin","admin123");
@@ -20,6 +20,17 @@ public class LoginTestRunner extends Setup {
     public void doLoginWithInvalidCred() {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.doLogin("wrong","wrong");
+        String alertActual= driver.findElements(By.className("oxd-text")).get(1).getText();
+        String alertExpected="Invalid credentials";
+        SoftAssert softAssert=new SoftAssert(); //soft assertion
+        softAssert.assertTrue(alertActual.contains(alertExpected));
+        softAssert.assertAll();
+    }
+
+    @Test(priority = 3,description = "Verify unsuccessful login with valid email invalid password")
+    public void doLoginWithInvalidPass() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.doLogin("admin","admin");
         String alertActual= driver.findElements(By.className("oxd-text")).get(1).getText();
         String alertExpected="Invalid credentials";
         SoftAssert softAssert=new SoftAssert(); //soft assertion
